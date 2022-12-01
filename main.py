@@ -47,6 +47,19 @@ def get_words():
     return get_words()
   return words.json()['data']['text']
 
+def get_tips():
+  conn = http.client.HTTPSConnection('apis.tianapi.com')  #接口域名
+  params = urllib.parse.urlencode({'key':'53f026175030f52468a2a86c923b094e','city':config["city"],'type':'1'})
+  headers = {'Content-type':'application/x-www-form-urlencoded'}
+  conn.request('POST','/tianqi/index',params,headers)
+  tianapi = conn.getresponse()
+  result = tianapi.read()
+  data = result.decode('utf-8')
+  dict_data = json.loads(data)
+  pop = dict_data['result']['quality']
+  tips = dict_data['result']['tips']
+  return tips
+
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
@@ -55,6 +68,7 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
-data = {"city":{"value":city},"weather":{"value":wea},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"birthday_left2":{"value":get_birthday2()},"words":{"value":get_words(), "color":get_random_color()}}
+tips = get_tips()
+data = {"city":{"value":city},"weather":{"value":wea},"tips":{"value":tips},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"birthday_left2":{"value":get_birthday2()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
