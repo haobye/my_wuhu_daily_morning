@@ -62,6 +62,18 @@ def get_tips():
   tips = dict_data['result']['tips']
   return tips
 
+def get_ciba():
+  url = "http://open.iciba.com/dsapi/"
+  headers = {
+    'Content-Type': 'application/json',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
+  }
+  r = get(url, headers=headers)
+  note_en = r.json()["content"]
+  note_ch = r.json()["note"]
+  return (note_en,note_ch)
+  
 def get_random_color():
   return "#%06x" % random.randint(0, 0xFFFFFF)
 
@@ -71,6 +83,7 @@ client = WeChatClient(app_id, app_secret)
 wm = WeChatMessage(client)
 wea, temperature = get_weather()
 tips = get_tips()
-data = {"city":{"value":city},"weather":{"value":wea},"tips":{"value":tips},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"birthday_left2":{"value":get_birthday2()},"words":{"value":get_words(), "color":get_random_color()}}
+note_ch, note_en = get_ciba()
+data = {"note_ch":{"value":note_ch},"note_en":{"value":note_en},"city":{"value":city},"weather":{"value":wea},"tips":{"value":tips},"temperature":{"value":temperature},"love_days":{"value":get_count()},"birthday_left":{"value":get_birthday()},"birthday_left2":{"value":get_birthday2()},"words":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
