@@ -50,7 +50,7 @@ def get_words():
 
 def get_tips():
   conn = http.client.HTTPSConnection('apis.tianapi.com')  #接口域名
-  params = urllib.parse.urlencode({'key':'53f026175030f52468a2a86c923b094e','city':config["city"],'type':'1'})
+  params = urllib.parse.urlencode({'key':'53f026175030f52468a2a86c923b094e','city':city,'type':'1'})
   headers = {'Content-type':'application/x-www-form-urlencoded'}
   conn.request('POST','/tianqi/index',params,headers)
   tianapi = conn.getresponse()
