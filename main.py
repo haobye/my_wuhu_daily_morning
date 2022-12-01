@@ -17,8 +17,7 @@ birthday2 = os.environ['BIRTHDAY2']
 app_id = os.environ["APP_ID"]
 app_secret = os.environ["APP_SECRET"]
 
-user_id1 = os.environ["USER_ID"]
-user_id2 = os.environ["USER_IDD"]
+user_id = os.environ["USER_ID"]
 template_id = os.environ["TEMPLATE_ID"]
 
 
@@ -87,7 +86,6 @@ wea, temperature = get_weather()
 tips = get_tips()
 note_en,note_ch = get_ciba()
 data = {"note_ch":{"value":note_ch, "color":get_random_color()},"note_en":{"value":note_en, "color":get_random_color()},"city":{"value":city},"weather":{"value":wea},"tips":{"value":tips, "color":get_random_color()},"temperature":{"value":temperature,"color":get_random_color()},"love_days":{"value":get_count(), "color":get_random_color()},"birthday_left":{"value":get_birthday()},"birthday_left2":{"value":get_birthday2()},"words":{"value":get_words(), "color":get_random_color()}}
-for i in range(1,3):
-  user_id = "user_id"+str(i)
-  res = wm.send_template(user_id, template_id, data)
+
+res = wm.send_template(user_id, template_id, data)
 print(res)
